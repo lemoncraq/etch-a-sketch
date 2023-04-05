@@ -15,22 +15,47 @@ function getRandomColor(colors) {
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
-function createGrid() {
-    for (i = 0; i < 4; i++) {
-        for (j = 0; j < 4; j++) {
+function createGrid(countDivs) {
+    let width = 100 * (1 / countDivs);
+    width += '%';
+    for (i = 0; i < countDivs; i++) {
+        for (j = 0; j < countDivs; j++) {
             let div = document.createElement('div');
-            div.classList.add("square")
+            div.classList.add("square");
+            div.style.width = width;
+            div.style.height = width;
             container.appendChild(div);
         }
     }
+    colorize();
 }
 
-createGrid();
+createGrid(4);
 
-let squares = document.querySelectorAll(".square")
 
-squares.forEach(square => {
-    square.addEventListener('mouseover', () => {
-        square.style.backgroundColor = getRandomColor(colorArray);
+
+function colorize() {
+    document.querySelectorAll(".square").forEach(square => {
+        square.addEventListener('mouseover', () => {
+            square.style.backgroundColor = getRandomColor(colorArray);
+        })
+    });
+}
+
+
+
+
+function resizeContainer() {
+    document.querySelectorAll(".square").forEach(square => {
+        square.remove();
+
     })
-});
+    let inputValue = document.querySelector('input').value;
+    if (inputValue <= 64) {
+        createGrid(inputValue);
+    } else {
+        alert('Не больше 64 квадратов');
+        createGrid(4);
+    }
+
+}
